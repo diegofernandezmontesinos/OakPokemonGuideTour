@@ -31,7 +31,6 @@ import "@ionic/react/css/display.css";
 /* import '@ionic/react/css/palettes/dark.class.css'; */
 import "@ionic/react/css/palettes/dark.system.css";
 import LandingPage from "./pages/LandingPage/LandingPage";
-import LogIn from "./components/LogIn/LogIn";
 import { SetStateAction, useState } from "react";
 import { QueryClient, QueryClientProvider } from "react-query";
 import Author from "./pages/Author/Author";
@@ -43,7 +42,7 @@ const queryClient = new QueryClient();
 setupIonicReact();
 
 const App: React.FC = () => {
-  
+  const [user, setUser] = useState<string[]>([]);
   return (
     <QueryClientProvider client={queryClient}>
       <IonApp>
@@ -54,9 +53,7 @@ const App: React.FC = () => {
             </Route>
             <Route exact path="/login">
               <LogIn
-                setUser={function (value: SetStateAction<string[]>): void {
-                  throw new Error("Function not implemented.");
-                }}
+                setUser={setUser}
               />
             </Route>
             <Route exact path="/home">

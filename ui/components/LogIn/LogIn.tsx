@@ -12,7 +12,7 @@ const LogIn: React.FC<LogInProps> = ({ setUser }) => {
   const [contraseña, setContraseña] = useState<string>("");
   const [error, setError] = useState<string>("");
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (nombre.length < 4 || nombre.length > 10) {
       setError("El nombre de usuario debe tener entre 4 y 10 caracteres.");
@@ -26,21 +26,16 @@ const LogIn: React.FC<LogInProps> = ({ setUser }) => {
       );
       return;
     }
-    console.log("setUser:", setUser);
     setError("");
-    setUser([nombre]);
-    console.log("setUser:", setUser);
-
-    localStorage.setItem("user", JSON.stringify({ nombre, contraseña }));
-    console.log("Usuario guardado en localStorage:", { nombre, contraseña });
-  };
-  const handleLogin = async (user: string) => {
     try {
       const response = await signIn({ nombre, contraseña });
       console.log("User signed in:", response);
-      setUser([user]);
+      setUser([nombre]);
+      localStorage.setItem("user", JSON.stringify({ nombre, contraseña }));
+      console.log("Usuario guardado en localStorage:", { nombre, contraseña });
     } catch (error) {
       console.error("Error signing in:", error);
+      setError("Error al iniciar sesión. Por favor, inténtelo de nuevo.");
     }
   };
 
@@ -69,7 +64,7 @@ const LogIn: React.FC<LogInProps> = ({ setUser }) => {
             placeholder="Contraseña"
           />
         </div>
-        <button onClick={() => handleLogin(nombre)}>Log In</button>
+        <button type="submit">Log In</button>
       </form>
       {error && <p>{error}</p>}
     </section>
